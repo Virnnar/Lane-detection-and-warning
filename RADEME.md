@@ -12,6 +12,6 @@ This is the Software Engineering assignment for the 2022 Information and Computa
    ```bash
    python3.9 -m pip install -r requirements.txt
 
-3. **Run the application**w
+3. **Run the application**
 Execute the app.py file to start the application:
 python app.py
