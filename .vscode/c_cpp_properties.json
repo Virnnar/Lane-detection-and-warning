@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "Win32", // 指示平台，如 Mac/Linux/Windows，实测乱填也行
+            "includePath": [
+                "${workspaceFolder}/**",
+                "D:/opencv/OpenCV-MinGW-Build-OpenCV-4.5.2-x64/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "D:/Mingw64/mingw64-posix/mingw64/bin/g++.exe"
+        }
+    ],
+    "version": 4
+}

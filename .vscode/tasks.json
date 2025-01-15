@@ -1,0 +1,64 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "build",
+            "command": "g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-I",
+                "D:/opencv/OpenCV-MinGW-Build-OpenCV-4.5.2-x64/include",
+                "-L",
+                "D:/opencv/OpenCV-MinGW-Build-OpenCV-4.5.2-x64/x64/mingw/bin",
+                "-l",
+                "libopencv_calib3d452",
+                "-l",
+                "libopencv_core452",
+                "-l",
+                "libopencv_dnn452",
+                "-l",
+                "libopencv_features2d452",
+                "-l",
+                "libopencv_flann452",
+                "-l",
+                "libopencv_gapi452",
+                "-l",
+                "libopencv_highgui452",
+                "-l",
+                "libopencv_imgcodecs452",
+                "-l",
+                "libopencv_imgproc452",
+                "-l",
+                "libopencv_ml452",
+                "-l",
+                "libopencv_objdetect452",
+                "-l",
+                "libopencv_photo452",
+                "-l",
+                "libopencv_stitching452",
+                "-l",
+                "libopencv_video452",
+                "-l",
+                "libopencv_videoio452",
+                "-l",
+                "opencv_videoio_ffmpeg452_64",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "调试器生成的任务。"
+        }
+    ],
+    "version": "2.0.0"
+}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>车道检测系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(120deg, #84fab0, #8fd3f4);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .btn-upload {
+            background: linear-gradient(90deg, #ff7eb3, #ff758c);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        .btn-upload:hover {
+            background: linear-gradient(90deg, #ff758c, #ff7eb3);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(255, 117, 140, 0.3);
+        }
+        #live-video {
+            display: none;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .tab-content {
+            margin-top: 20px;
+        }
+        .progress {
+            display: none; /* 初始隐藏 */
+            margin-top: 20px;
+        }
+        .alert {
+            display: none; /* 初始隐藏 */
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>车道检测系统</h1>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <button class="nav-link active" id="upload-tab" onclick="switchTab('upload')">上传视频</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="live-tab" onclick="switchTab('live')">实时摄像头</button>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="upload-section">
+                <form id="uploadForm" enctype="multipart/form-data" method="post" action="/upload">
+                    <div class="mb-4">
+                        <label for="fileInput" class="form-label">选择.mp4 文件</label>
+                        <input type="file" id="fileInput" name="file" accept=".mp4" class="form-control" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-upload">开始检测处理</button>
+                    </div>
+                </form>
+                <div class="progress mt-4">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 100%">Processing...</div>
+                </div>
+                <div id="response" class="alert"></div>
+            </div>
+            <div id="live-section" style="display: none;">
+                <button class="btn btn-upload" onclick="startLive()">启动摄像头</button>
+                <img id="live-video" style="display:none;" alt="实时视频流">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function switchTab(tab) {
+            document.getElementById('upload-section').style.display = tab === 'upload' ? 'block' : 'none';
+            document.getElementById('live-section').style.display = tab === 'live' ? 'block' : 'none';
+            document.getElementById('upload-tab').classList.toggle('active', tab === 'upload');
+            document.getElementById('live-tab').classList.toggle('active', tab === 'live');
+        }
+
+        const form = document.getElementById('uploadForm');
+        const progress = document.querySelector('.progress');
+        const responseDiv = document.getElementById('response');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // 阻止表单默认提交
+            progress.style.display = 'block'; // 显示进度条
+            responseDiv.style.display = 'none'; // 隐藏响应消息
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                progress.style.display = 'none'; // 隐藏进度条
+                responseDiv.style.display = 'block'; // 显示响应消息
+                responseDiv.className = 'alert alert-success';
+                responseDiv.innerHTML = `<strong>Success:</strong> ${result.message}<br><pre>${result.output || ''}</pre>`;
+            } catch (error) {
+                progress.style.display = 'none'; // 隐藏进度条
+                responseDiv.style.display = 'block'; // 显示错误消息
+                responseDiv.className = 'alert alert-danger';
+                responseDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
+            }
+        });
+
+        function startLive() {
+            const liveVideo = document.getElementById('live-video');
+            liveVideo.style.display = 'block';
+            liveVideo.src = '/live';
+        }
+    </script>
+</body>
+</html>
